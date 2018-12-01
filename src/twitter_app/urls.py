@@ -13,19 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.conf.urls import url, include
-from twitter_app.views import TweetListView
-from django.conf import settings
-from django.conf.urls.static import static
-from .views import home
-
+from django.conf.urls import url
+from .views import TweetDetailView, TweetListView
 
 urlpatterns = [
-    url(r'admin/', admin.site.urls),
-    url(r'^$', TweetListView.as_view(), name='home-view'),
-    url(r'^tweet/', include('twitter_app.urls')),
-]
+    url(r'^$', TweetListView.as_view(), name='list'),
+    url(r'^(?P<pk>(\d))/$', TweetDetailView.as_view(), name='tweet-detail'),
 
-if settings.DEBUG:
-    urlpatterns += (static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+]
