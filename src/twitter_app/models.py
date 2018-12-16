@@ -2,6 +2,7 @@ from django.shortcuts import reverse
 from django.conf import settings
 from django.db import models
 
+
 # Create your models here.
 
 class Tweet(models.Model):
@@ -14,4 +15,7 @@ class Tweet(models.Model):
         return str(self.content)
 
     def get_absolute_url(self):
-        return reverse('tweet-list')
+        return reverse('tweet:tweet-detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-timestamp']

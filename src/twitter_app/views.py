@@ -3,8 +3,10 @@ from django.views.generic import (
     DetailView,
     ListView,
     CreateView,
-    UpdateView
+    UpdateView,
+    DeleteView
 )
+from django.urls import reverse_lazy
 from .models import Tweet
 from .forms import TweetModelForm
 from .mixins import FormUserNeededMixin, UserOwnerMixin
@@ -14,14 +16,17 @@ from .mixins import FormUserNeededMixin, UserOwnerMixin
 class TweetCreateView(FormUserNeededMixin, CreateView):
     form_class = TweetModelForm
     template_name = 'twitter_app/tweet_create.html'
-    # success_url = '/tweet/'
 
 
 class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
     queryset = Tweet.objects.all()
     form_class = TweetModelForm
     template_name = 'twitter_app/tweet_update.html'
-    # success_url = '/tweet/'
+
+class TweetDeleteView(LoginRequiredMixin, DeleteView):
+    model = Tweet
+    template_name = 'twitter_app/tweet_delete.html'
+    success_url = reverse_lazy('tweet:tweet-list')
 
 
 class TweetDetailView(DetailView):
