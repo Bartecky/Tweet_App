@@ -1,8 +1,17 @@
-
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 from .models import Tweet
+from .forms import TweetModelForm
+
 
 # Create your views here.
+class TweetCreateView(CreateView):
+    form_class = TweetModelForm
+    template_name = 'twitter_app/tweet_create.html'
+    success_url = '/tweet/'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(TweetCreateView, self).form_valid(form)
 
 class TweetDetailView(DetailView):
     queryset = Tweet.objects.all()
