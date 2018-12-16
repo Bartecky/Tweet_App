@@ -4,7 +4,7 @@
     {% for object in object_list %}
         <p>{{ object.content }}<br>
             {{ object.user }}<br>
-            {{ object.timestamp|timesince }} ago</p><br><br>
+            {{ object.timestamp|timesince }} ago</p>
     {% empty %}
         No tweets yet
     {% endfor %}
