@@ -1,8 +1,10 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <form method="get" action="{% url 'tweet:tweet-list' %}">
-        <input type="text" name="q" placeholder="Search" value="{{ request.GET.q }}">
-        <input type="submit" value="Search">
-    </form>
-{% endblock %}
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <form class="form-inline" method="get" action="{% url 'tweet:tweet-list' %}">
+            <div class="form-group">
+                <input class="form-control" type="text" name="q" placeholder="Your search" value="{{ request.GET.q }}">
+            </div>
+            <input class="btn btn-default" type="submit" value="Search">
+        </form>
+    </div>
+</div>
