@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% include 'twitter_app/tweet_search_form.html' %}<br>
     {% for object in object_list %}
         <p>{{ object.content }}<br>
             {{ object.user }}<br>
             {{ object.timestamp|timesince }} ago</p>
     {% empty %}
-        No tweets yet
+        {% if request.GET.q %}
+            <p>No tweets found</p>
+        {% else %}
+            <p>No tweets </p>[
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
