@@ -1,8 +1,4 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <form class="form" action="" method="post"> {% csrf_token %}
+    <form class="form" action="{% if action_url %}{{ action_url }}{% endif %}" method="post"> {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="{{ btn_title }}">
+        <input class="btn btn-primary" type="submit" value="{{ btn_title }}">
     </form>
-{% endblock %}
