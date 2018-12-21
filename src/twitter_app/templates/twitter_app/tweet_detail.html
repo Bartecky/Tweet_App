@@ -4,8 +4,15 @@
     {{ block.super }} | Tweet Detail
 {% endblock %}
 {% block content %}
-    {{ object.content }}<br>
-    {{ object.user }}<br>
-    {{ object.timestamp|timesince }} ago
+    <div class="row">
+        <div class="col-sm-3 col-xs-12" style="background-color: #31c6fe">
+            <h4>{{ object.user }}</h4>
+        </div>
+        <div class="col-sm-9 col-xs-12">
+            {{ object.content }}<br>
+            <br>
+            {{ object.timestamp|timesince }} ago
+        </div>
+    </div>
 {% endblock %}
 
