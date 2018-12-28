@@ -1,4 +1,4 @@
-    <form class="form" action="{% if action_url %}{{ action_url }}{% endif %}" method="post"> {% csrf_token %}
+    <form {% if form_id %} id='{{ form_id }}' {% endif %}class="form" action="{% if action_url %}{{ action_url }}{% endif %}" method="post"> {% csrf_token %}
         {{ form.as_p }}
         <input class="btn btn-primary" type="submit" value="{{ btn_title }}">
     </form>
