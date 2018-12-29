@@ -20,6 +20,20 @@
         $(document).ready(function () {
             var query = getParameterByName('q');
             var tweetList = [];
+            var nextTweetUrl;
+
+            function attachTweet(tweetValue, prepend) {
+                var tweetContent = tweetValue.content;
+                var dateDisplay = tweetValue.date_display;
+                var tweetUser = tweetValue.user;
+                var tweetFormattedHtml = "<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br> via " +
+                    tweetUser.username + " | " + dateDisplay + " | " + "<a href='#'>View</a>" + "</div></div><hr>";
+                if (prepend == true) {
+                    $("#tweet-container").prepend(tweetFormattedHtml);
+                } else {
+                    $("#tweet-container").append(tweetFormattedHtml);
+                }
+            }
 
             function parseTweets() {
                 if (tweetList == 0) {
@@ -27,25 +41,32 @@
                 } else {
                     $.each(tweetList, function (key, value) {
                         var tweetKey = key;
-                        var tweetContent = value.content;
-                        var tweetUser = value.user;
-                        $("#tweet-container").append(
-                            "<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br> via " + tweetUser.username + " | " + "<a href='#'>View</a>" + "</div></div><hr>"
-                        )
-
+                        attachTweet(value)
                     })
                 }
             }
 
-            function fetchTweets() {
+            function fetchTweets(url) {
+                console.log('fetching..');
+                var fetchUrl;
+                if (!url) {
+                    fetchUrl = '/api/tweet/'
+                } else {
+                    fetchUrl = url
+                }
                 $.ajax({
-                    url: '/api/tweet/',
+                    url: fetchUrl,
                     data: {
                         'q': query
                     },
                     method: 'GET',
                     success: function (data) {
-                        tweetList = data;
+                        tweetList = data.results;
+                        if (data.next) {
+                            nextTweetUrl = data.next;
+                        } else {
+                            $("#loadmore").css('display', 'none')
+                        }
                         parseTweets()
                     },
                     error: function (data) {
@@ -57,29 +78,59 @@
 
             fetchTweets();
 
+            $("#loadmore").click(function (event) {
+                event.preventDefault();
+                if (nextTweetUrl) {
+                    fetchTweets(nextTweetUrl)
+                }
+            });
+
+            var charsStart = 140;
+            var charsCurrent = 0;
+            $("#tweet-form").append("<span id='tweetCharsLeft'>" + charsStart + "</span>");
+
+            $("#tweet-form textarea").keyup(function (event) {
+                var tweetValue = $(this).val();
+                charsCurrent = charsStart - tweetValue.length;
+                var spanChars = $("#tweetCharsLeft");
+                spanChars.text(charsCurrent);
+
+                if (charsCurrent > 0) {
+                    spanChars.removeClass('grey-color');
+                    spanChars.removeClass('red-color');
+                } else if (charsCurrent == 0) {
+                    spanChars.removeClass('red-color');
+                    spanChars.addClass('grey-color');
+                } else if (charsCurrent < 0) {
+                    spanChars.removeClass('grey-color');
+                    spanChars.addClass('red-color');
+
+                }
+            });
 
             $("#tweet-form").submit(function (event) {
                 event.preventDefault();
                 var this_ = $(this);
                 var formData = this_.serialize();
-                $.ajax({
-                    url: '/api/tweet/create',
-                    data: formData,
-                    method: 'POST',
-                    success: function (data) {
-                        {#console.log(data);#}
-                        fetchTweets();
-                        {#tweetList = data;#}
-                        {#parseTweets()#}
-                    },
-                    error: function (data) {
-                        console.log('Error');
-                        console.log(data.statusText);
-                        console.log(data.status);
-                    }
-                });
-
-            })
+                if (charsCurrent >= 0) {
+                    $.ajax({
+                        url: '/api/tweet/create/',
+                        data: formData,
+                        method: 'POST',
+                        success: function (data) {
+                            this_.find('input[type=text], textarea').val('');
+                            attachTweet(data, true);
+                        },
+                        error: function (data) {
+                            console.log('Error');
+                            console.log(data.statusText);
+                            console.log(data.status);
+                        }
+                    })
+                } else {
+                    console.log('Cannot send, tweet too long')
+                }
+            });
         });
     </script>
 {% endblock %}
@@ -104,6 +155,7 @@
 
 
             </div>
+            <a href="#" id="loadmore">Load More Tweets</a>
 
 
         </div>
