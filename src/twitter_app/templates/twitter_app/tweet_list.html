@@ -26,8 +26,8 @@
                 var tweetContent = tweetValue.content;
                 var dateDisplay = tweetValue.date_display;
                 var tweetUser = tweetValue.user;
-                var tweetFormattedHtml = "<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br> via " +
-                    tweetUser.username + " | " + dateDisplay + " | " + "<a href='#'>View</a>" + "</div></div><hr>";
+                var tweetFormattedHtml = "<div class=\"media\"><div class=\"media-body\">" + tweetContent +
+                    "<br> via <a href='" + tweetUser.url + "'>" + tweetUser.username + " </a> | " + dateDisplay + " | " + "<a href='#'>View</a>" + "</div></div><hr>";
                 if (prepend == true) {
                     $("#tweet-container").prepend(tweetFormattedHtml);
                 } else {
@@ -140,7 +140,7 @@
 
     <div class="row">
         <div class="col-sm-3 col-xs-12" style="background-color: #31c6fe">
-            <h4>{{ request.user }}</h4>
+            <h3>{{ request.user }}</h3>
         </div>
         <div class="col-sm-9">
             {% if not request.GET.q %}

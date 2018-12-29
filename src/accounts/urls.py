@@ -13,21 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.conf.urls import url, include
-from django.conf import settings
-from django.conf.urls.static import static
-from twitter_app.views import TweetListView
-
+from django.conf.urls import url
+from .views import (
+    UserDetailView
+)
 
 urlpatterns = [
-    url(r'admin/', admin.site.urls),
-    url(r'^$', TweetListView.as_view(), name='home'),
-    url(r'^tweet/', include(('twitter_app.urls', 'tweet'), namespace='tweet')),
-    url(r'^api/tweet/', include(('twitter_app.api.urls', 'tweet-api'), namespace='tweet-api')),
-    url(r'^', include(('accounts.urls', 'profiles'), namespace='profiles')),
+    # url(r'^$', RedirectView.as_view(url='/')),
+    # url(r'^search/$', TweetListView.as_view(), name='tweet-list'),
+    # url(r'^create/$', TweetCreateView.as_view(), name='tweet-create'),
+    url(r'^(?P<username>[\w.@+-]+)/$', UserDetailView.as_view(), name='user-detail'),
+    # url(r'^(?P<pk>(\d)+)/update/$', TweetUpdateView.as_view(), name='tweet-update'),
+    # url(r'^(?P<pk>(\d)+)/delete/$', TweetDeleteView.as_view(), name='tweet-delete'),
 
 ]
-
-if settings.DEBUG:
-    urlpatterns += (static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
