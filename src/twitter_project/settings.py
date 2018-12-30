@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'twitter_app',
     'rest_framework',
     'accounts',
+    'hashtags'
 ]
 
 MIDDLEWARE = [
