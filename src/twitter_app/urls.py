@@ -20,7 +20,8 @@ from .views import (
     TweetDetailView,
     TweetListView,
     TweetUpdateView,
-    TweetDeleteView
+    TweetDeleteView,
+    RetweetView
 )
 
 urlpatterns = [
@@ -30,5 +31,6 @@ urlpatterns = [
     url(r'^(?P<pk>(\d)+)/$', TweetDetailView.as_view(), name='tweet-detail'),
     url(r'^(?P<pk>(\d)+)/update/$', TweetUpdateView.as_view(), name='tweet-update'),
     url(r'^(?P<pk>(\d)+)/delete/$', TweetDeleteView.as_view(), name='tweet-delete'),
+    url(r'^(?P<pk>(\d)+)/retweet/$', RetweetView.as_view(), name='tweet-detail'),
 
 ]

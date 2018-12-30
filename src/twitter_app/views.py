@@ -1,5 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.shortcuts import redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.views import View
 from django.views.generic import (
     DetailView,
     ListView,
@@ -13,7 +16,15 @@ from .forms import TweetModelForm
 from .mixins import FormUserNeededMixin, UserOwnerMixin
 
 
-# Create your views here.
+class RetweetView(View):
+    def get(self, request, pk, *args, **kwargs):
+        tweet = get_object_or_404(Tweet, pk=pk)
+        if request.user.is_authenticated:
+            new_tweet = Tweet.objects.retweet(request.user, tweet)
+            return HttpResponseRedirect('/')
+        return HttpResponseRedirect(tweet.get_absolute_url())
+
+
 class TweetCreateView(FormUserNeededMixin, CreateView):
     form_class = TweetModelForm
     template_name = 'twitter_app/tweet_create.html'
@@ -23,6 +34,7 @@ class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
     queryset = Tweet.objects.all()
     form_class = TweetModelForm
     template_name = 'twitter_app/tweet_update.html'
+
 
 class TweetDeleteView(LoginRequiredMixin, DeleteView):
     model = Tweet
@@ -37,7 +49,6 @@ class TweetDetailView(DetailView):
 class TweetListView(ListView):
     queryset = Tweet.objects.all()
     template_name = 'twitter_app/tweet_list.html'
-
 
     def get_queryset(self, *args, **kwargs):
         qs = Tweet.objects.all()
