@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from .views import (
-    UserDetailView
+    UserDetailView,
+    UserFollowView
 )
 
 urlpatterns = [
@@ -23,6 +24,7 @@ urlpatterns = [
     # url(r'^search/$', TweetListView.as_view(), name='tweet-list'),
     # url(r'^create/$', TweetCreateView.as_view(), name='tweet-create'),
     url(r'^(?P<username>[\w.@+-]+)/$', UserDetailView.as_view(), name='user-detail'),
+    url(r'^(?P<username>[\w.@+-]+)/follow/$', UserFollowView.as_view(), name='user-follow'),
     # url(r'^(?P<pk>(\d)+)/update/$', TweetUpdateView.as_view(), name='tweet-update'),
     # url(r'^(?P<pk>(\d)+)/delete/$', TweetDeleteView.as_view(), name='tweet-delete'),
 
