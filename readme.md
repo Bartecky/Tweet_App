@@ -26,5 +26,14 @@ You have to create super user by:
 `python manage.py createsuperuser` and refresh http://127.0.0.1:8000/
 <hr>
 
+Screens:
+Tweets<br>
+<img src="images/tweets" height=400>
+
+Tweet detail<br>
+<img src="images/tweet_detail.png" height=400>
+
+Hashtags #<br>
+<img src="images/hashtags.png" height=400>
 
 
