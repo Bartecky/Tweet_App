@@ -48,7 +48,7 @@ class TweetListAPIView(generics.ListAPIView):
     pagination_class = StandardResultPagination
 
     def get_serializer_context(self, *args, **kwargs):
-        context = super().get_serializer_context(*args, **kwargs)
+        context = super(TweetListAPIView, self).get_serializer_context(*args, **kwargs)
         context['request'] = self.request
         return context
 
