@@ -28,7 +28,7 @@ You have to create super user by:
 
 Screens:
 Tweets<br>
-<img src="images/tweets" height=400>
+<img src="images/tweets.png" height=400>
 
 Tweet detail<br>
 <img src="images/tweet_detail.png" height=400>
