@@ -27,13 +27,4 @@ You have to create super user by:
 <hr>
 
 
-Screens:
-Main view<br>
-<img src="images/newtweet.png" height=400>
-
-User details<br>
-<img src="images/details.png" height=400>
-
-Hashtag #<br>
-<img src="images/hashtag.png" height=400>
 
